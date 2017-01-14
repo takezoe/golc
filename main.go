@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,7 +18,7 @@ func main() {
 		rootDir = flag.Arg(0)
 	}
 	if *format != "csv" && *format != "tsv" && *format != "json" {
-		log.Fatal("-f option must be \"csv\", \"tsv\" or \"json\"")
+		fmt.Fprintf(os.Stderr, "-f option must be \"csv\", \"tsv\" or \"json\"\n")
 		os.Exit(1)
 	}
 	results := listFiles(rootDir)
@@ -42,7 +41,7 @@ func printCountResult(result CountResult, format string) {
 	case "json":
 		json, err := json.Marshal(result)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Fprintf(os.Stderr, "Failed to serializae to JSON: %s\n", err)
 			os.Exit(1)
 		}
 		fmt.Println(string(json))
@@ -52,7 +51,7 @@ func printCountResult(result CountResult, format string) {
 func listFiles(path string) []CountResult {
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "Failed to scal directory: %s\n", err)
 		os.Exit(1)
 	}
 	results := []CountResult{}

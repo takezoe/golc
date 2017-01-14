@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
-	"log"
 	"os"
 	"strings"
 )
@@ -39,7 +39,7 @@ func countFile(filePath string, fileType string, singleComments []string, multiL
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			log.Fatal(err)
+			fmt.Fprintf(os.Stderr, "Failed to read file: %s\n", err)
 			os.Exit(1)
 		}
 
